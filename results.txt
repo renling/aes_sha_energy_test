@@ -1,0 +1,30 @@
+DRAM tool result
+DRAM test: 35W, 15GB/s --> 2.3 nJ / Byte
+
+Python results
+AES test:  41W, 0.8GB/s --> 50 nj / Byte  (1MB input in L3)
+AES test:  33W, 1.1GB/s --> 30 nj / Byte  (24KB input in L1)
+SHA2 test: 30W, 0.1 GB/s --> 300 nJ / Byte (short/long input)
+
+CryptoPP results
+SHA2_256 test: 35W, 0.2 GB/s --> 175 nJ / Byte (1 threads)
+SHA2_256 test: 48W, 0.4 GB/s --> 120 nJ / Byte (2 threads)
+SHA2_256 test: 75W, 0.8 GB/s --> 95 nJ / Byte (4 threads)
+SHA2_256 test: 95W, 1.0 GB/s --> 95 nJ / Byte (8 threads)
+
+SHA3_256 test: 30W, 0.2 GB/s --> 150 nJ / Byte (1 threads)
+SHA3_256 test: 44W, 0.4 GB/s --> 110 nJ / Byte (2 threads)
+SHA3_256 test: 65W, 0.8 GB/s --> 80 nJ / Byte (4 threads)
+SHA3_256 test: 82W, 1.1 GB/s --> 75 nJ / Byte (8 threads)
+
+SHA3_256 test: 33W, 0.12 GB/s --> 275 nJ / Byte (1 threads)
+
+AES_128 test: 33W, 3.1 GB/s --> 10.6 nJ / Byte (1 threads)
+AES_128 test: 46W, 5.6 GB/s --> 8.2 nJ / Byte (2 threads)
+AES_128 test: 73W, 10.2 GB/s --> 7.1 nJ / Byte (4 threads)
+AES_128 test: 94W, 12.4 GB/s --> 7.6 nJ / Byte (8 threads)
+
+DRAM test: 42W, 5.8 GB/s --> 7.2 nJ / Byte (1 threads)
+DRAM test: 53W, 10.3 GB/s --> 5.1 nJ / Byte (2 threads)
+DRAM test: 80W, 13.9 GB/s --> 5.7 nJ / Byte (4 threads)
+DRAM test: 94W, 14.1 GB/s --> 6.7 nJ / Byte (8 threads)
