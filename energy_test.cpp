@@ -5,6 +5,7 @@
 #include <sha.h>
 #include <sha3.h>
 #include <modes.h>
+#include <blowfish.h>
 #include <omp.h>
 using namespace std;
 
@@ -77,7 +78,8 @@ double aes_test(int batchSize, int totalSize, int numThreads)
 double mem_test(int batchSize, int totalSize, int numThreads)
 {
 	int N = batchSize;
-	int M = ((long long) totalSize) * 1024 * 1024 / batchSize;
+	long long M = totalSize;
+	M = M * 1024 * 1024 * 1024 / batchSize;
 
 	CryptoPP::AutoSeededRandomPool rng;
 	byte *src[8], *dst[8]; 
@@ -107,20 +109,30 @@ int main(int argc, char *argv[])
 	int totalSize = 4;			// in GB
 	int numThreads = 2;
 
+	string test = "hash";
+
+	if (argc >= 5)
+		numThreads = atoi(argv[4]);
 	if (argc >= 4)
-		numThreads = atoi(argv[3]);
+		totalSize = atoi(argv[3]);
 	if (argc >= 3)
-		totalSize = atoi(argv[2]);
-	if (argc >= 3)
-		batchSize = atoi(argv[1]);
+		batchSize = atoi(argv[2]);
 	batchSize *= 1024;
+	if (argc >= 2)
+		test = string(argv[1]);
 
 	double elapsed_time;
-	//elapsed_time = hash_test(batchSize, totalSize, numThreads);
-	//elapsed_time = aes_test(batchSize, totalSize, numThreads);
-	elapsed_time = mem_test(batchSize, totalSize, numThreads);
 
-	double BW = totalSize / 1024.0 * numThreads / elapsed_time;
+	if (test == "hash")	
+		elapsed_time = hash_test(batchSize, totalSize, numThreads);
+	else if (test == "aes")	
+		elapsed_time = aes_test(batchSize, totalSize, numThreads);
+	else if (test == "mem")	
+		elapsed_time = mem_test(batchSize, totalSize, numThreads);
+	else
+		return 0;
+
+	double BW = totalSize * numThreads / elapsed_time;
 	cout << "Elapsed time: " << elapsed_time << " s" << endl;
 	cout << "Bandwidth: " << BW << " GB/s" << endl;
 	
