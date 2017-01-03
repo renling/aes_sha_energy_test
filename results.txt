@@ -1,12 +1,12 @@
 DRAM tool result
 DRAM test: 35W, 15GB/s --> 2.3 nJ / Byte
 
-Python results
+Python tests on Alienware desktop
 AES test:  41W, 0.8GB/s --> 50 nj / Byte  (1MB input in L3)
 AES test:  33W, 1.1GB/s --> 30 nj / Byte  (24KB input in L1)
 SHA2 test: 30W, 0.1 GB/s --> 300 nJ / Byte (short/long input)
 
-CryptoPP results
+CryptoPP results on Alienware desktop
 SHA2_256 test: 35W, 0.2 GB/s --> 175 nJ / Byte (1 threads)
 SHA2_256 test: 48W, 0.4 GB/s --> 120 nJ / Byte (2 threads)
 SHA2_256 test: 75W, 0.8 GB/s --> 95 nJ / Byte (4 threads)
@@ -28,3 +28,10 @@ DRAM test: 42W, 5.8 GB/s --> 7.2 nJ / Byte (1 threads)
 DRAM test: 53W, 10.3 GB/s --> 5.1 nJ / Byte (2 threads)
 DRAM test: 80W, 13.9 GB/s --> 5.7 nJ / Byte (4 threads)
 DRAM test: 94W, 14.1 GB/s --> 6.7 nJ / Byte (8 threads)
+
+CryptoPP results on Thinkpad laptop
+AES_128 test: 3W, 1.8 GB/s --> 1.7 nJ / Byte (1 threads)
+AES_128 test: 4.8W, 3.4 GB/s --> 1.4 nJ / Byte (2 threads)
+
+DRAM test: 5W, 5.8 GB/s --> 0.9 nJ / Byte (1 threads)
+DRAM test: 7W, 7.5 GB/s --> 0.9 nJ / Byte (2 threads)
