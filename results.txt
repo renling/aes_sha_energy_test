@@ -29,6 +29,11 @@ DRAM test: 53W, 10.3 GB/s --> 5.1 nJ / Byte (2 threads)
 DRAM test: 80W, 13.9 GB/s --> 5.7 nJ / Byte (4 threads)
 DRAM test: 94W, 14.1 GB/s --> 6.7 nJ / Byte (8 threads)
 
+CryptoPP results on Alienware desktop 1.6GHz
+DRAM test: 16W, 10.2 GB/s --> 1.6 nJ / Byte (4 threads)
+SHA2_256 test: 15W, 0.3 GB/s --> 50 nJ / Byte (4 threads)
+AES_128 test: 13W, 5.0 GB/s --> 2.6 nJ / Byte (4 threads)
+
 CryptoPP results on Thinkpad laptop 1.4GHz
 SHA2_256 test: 3W, 0.1 GB/s --> 30 nJ / Byte (1 threads)
 SHA2_256 test: 4.8W, 0.18 GB/s --> 26 nJ / Byte (2 threads)
