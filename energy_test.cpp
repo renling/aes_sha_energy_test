@@ -20,7 +20,7 @@ double get_wall_time()
 double hash_test(int batchSize, int totalSize, int numThreads)
 {
 	int N = batchSize;
-	int M = ((long long) totalSize) * 1024 * 1024 * 1024 / batchSize;
+	int M = ((long long) totalSize) * 1024 * 1024 * 1024 / N;
 	CryptoPP::AutoSeededRandomPool rng;
 	byte* message = new byte [N];
 	rng.GenerateBlock(message, N);
@@ -44,12 +44,12 @@ double hash_test(int batchSize, int totalSize, int numThreads)
 double aes_test(int batchSize, int totalSize, int numThreads)
 {
 	int N = batchSize;
-	int M = ((long long) totalSize) * 1024 * 1024 * 1024 / batchSize;
+	int M = ((long long) totalSize) * 1024 * 1024 * 1024 / N;
 	CryptoPP::AutoSeededRandomPool rng;
-	byte* key = new byte [CryptoPP::AES::DEFAULT_KEYLENGTH];
+	const int KeyLen = CryptoPP::AES::DEFAULT_KEYLENGTH;
+	byte* key = new byte [KeyLen];
 
 	typedef CryptoPP::ECB_Mode<CryptoPP::AES>::Encryption ECB_AES;
-	const int KeyLen = CryptoPP::AES::DEFAULT_KEYLENGTH;
 	ECB_AES aes[8];
 	for (int k = 0; k < 8; k++)
 	{
@@ -79,7 +79,7 @@ double mem_test(int batchSize, int totalSize, int numThreads)
 {
 	int N = batchSize;
 	long long M = totalSize;
-	M = M * 1024 * 1024 * 1024 / batchSize;
+	M = M * 1024 * 1024 * 1024 / N;
 
 	CryptoPP::AutoSeededRandomPool rng;
 	byte *src[8], *dst[8]; 
@@ -101,6 +101,29 @@ double mem_test(int batchSize, int totalSize, int numThreads)
 		}
 	double end = get_wall_time();
 	return end - start;
+}
+
+double arith_test(int batchSize, int totalSize, int numThreads)
+{
+	int N = batchSize;
+	long long M = totalSize;
+	M = M * 1024 * 1024 * 1024 / N;
+
+	int tmp[32];
+	double start = get_wall_time();
+	#pragma omp parallel
+	#pragma omp for
+	for (int k = 0; k < numThreads; k++)
+		for (int i = 0; i < M; i++)
+		{
+			#pragma unroll
+			for (int j = 0; j < N / 4 / 8; j++)
+			{
+				tmp[i] += tmp[i];
+			}
+		}
+	double end = get_wall_time();
+	return end - start + tmp[17] * 0;
 }
 
 int main(int argc, char *argv[])
@@ -129,6 +152,8 @@ int main(int argc, char *argv[])
 		elapsed_time = aes_test(batchSize, totalSize, numThreads);
 	else if (test == "mem")	
 		elapsed_time = mem_test(batchSize, totalSize, numThreads);
+	else if (test == "arith")	
+		elapsed_time = arith_test(batchSize, totalSize, numThreads);
 	else
 		return 0;
 
