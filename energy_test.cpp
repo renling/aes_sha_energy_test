@@ -20,7 +20,7 @@ double get_wall_time()
 double hash_test(int batchSize, int totalSize, int numThreads)
 {
 	int N = batchSize;
-	int M = ((long long) totalSize) * 1024 * 1024 * 1024 / N;
+	long long M = ((long long) totalSize) * 1024 * 1024 * 1024 / N;
 	CryptoPP::AutoSeededRandomPool rng;
 	byte* message = new byte [N];
 	rng.GenerateBlock(message, N);
@@ -32,6 +32,7 @@ double hash_test(int batchSize, int totalSize, int numThreads)
 	#pragma omp for
 	for (int k = 0; k < numThreads; k++)
 	{
+		#pragma unroll
 		for (int i = 0; i < M; i++)
 		{
 			hash[k].Update(message, N);
@@ -44,7 +45,7 @@ double hash_test(int batchSize, int totalSize, int numThreads)
 double aes_test(int batchSize, int totalSize, int numThreads)
 {
 	int N = batchSize;
-	int M = ((long long) totalSize) * 1024 * 1024 * 1024 / N;
+	long long M = ((long long) totalSize) * 1024 * 1024 * 1024 / N;
 	CryptoPP::AutoSeededRandomPool rng;
 	const int KeyLen = CryptoPP::AES::DEFAULT_KEYLENGTH;
 	byte* key = new byte [KeyLen];
@@ -58,17 +59,19 @@ double aes_test(int batchSize, int totalSize, int numThreads)
 	}
 
 
-	byte* message = new byte [N];
-	rng.GenerateBlock(message, N);
+	byte* ptxt = new byte [N];
+	byte* ctxt = new byte [N];
+	rng.GenerateBlock(ptxt, N);
 
 	double start = get_wall_time();
 	#pragma omp parallel
 	#pragma omp for
 	for (int k = 0; k < numThreads; k++)
 	{
+		#pragma unroll
 		for (int i = 0; i < M; i++)
 		{
-			aes[k].ProcessData(message, message, N);
+			aes[k].ProcessData(ctxt, ptxt, N);
 		}
 	}
 	double end = get_wall_time();
@@ -128,7 +131,7 @@ double arith_test(int batchSize, int totalSize, int numThreads)
 
 int main(int argc, char *argv[])
 {
-	int batchSize = 16; 	// in KB
+	int batchSize = 16; 	// in B
 	int totalSize = 4;			// in GB
 	int numThreads = 2;
 
@@ -140,7 +143,6 @@ int main(int argc, char *argv[])
 		totalSize = atoi(argv[3]);
 	if (argc >= 3)
 		batchSize = atoi(argv[2]);
-	batchSize *= 1024;
 	if (argc >= 2)
 		test = string(argv[1]);
 
